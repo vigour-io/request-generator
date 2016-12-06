@@ -1,0 +1,27 @@
+{
+  "name": "request-generator",
+  "version": "1.0.0",
+  "description": "Factory for Generator functions that yield request-response transactions.",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vigour-io/request-generator.git"
+  },
+  "keywords": [
+    "async",
+    "generator",
+    "functions",
+    "yield",
+    "await",
+    "fancy"
+  ],
+  "author": "vigour",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vigour-io/request-generator/issues"
+  },
+  "homepage": "https://github.com/vigour-io/request-generator#readme"
+}
