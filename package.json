@@ -23,5 +23,11 @@
   "bugs": {
     "url": "https://github.com/vigour-io/request-generator/issues"
   },
-  "homepage": "https://github.com/vigour-io/request-generator#readme"
+  "homepage": "https://github.com/vigour-io/request-generator#readme",
+  "devDependencies": {
+    "tape": "^4.6.3"
+  },
+  "dependencies": {
+    "JSONStream": "^1.2.1"
+  }
 }
