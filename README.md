@@ -23,3 +23,9 @@ for (let hello of requestGenerator()) {
   console.log(hello)
 }
 ```
+
+### ToDo
+
+- define `POST` request payloads per page
+- error handling
+- throttling of requests / sec for weak APIs

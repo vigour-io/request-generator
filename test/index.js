@@ -4,8 +4,9 @@ const test = require('tape')
 
 test('basics - make a request generator', t => {
   const pageSize = 10
+  const expected = 100
   const requestGenerator = require('../')
-  console.log('wex?', requestGenerator)
+
   const gen = requestGenerator({
     request: 'http://localhost:4444/shows',
     pagination: {
@@ -26,8 +27,11 @@ test('basics - make a request generator', t => {
       console.log('got data chunk yes!')
     }
   })
-
+  var cnt = 0
   for (let result of gen()) {
     console.log('=========> transaction done!', result)
+    if (++cnt === expected) {
+      t.end()
+    }
   }
 })
