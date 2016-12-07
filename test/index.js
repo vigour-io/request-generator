@@ -2,6 +2,9 @@
 
 const test = require('tape')
 
+const server = require('./server')
+server.listen(4444)
+
 test('basics - make a request generator', t => {
   const pageSize = 10
   const requestGenerator = require('../')
@@ -51,6 +54,7 @@ test('basics - make a request generator', t => {
     } else {
       console.log('weyo reached the end!')
       t.equals(consumedShows, totalShows, `consumed all ${totalShows} shows`)
+      server.close()
       t.end()
     }
   }
