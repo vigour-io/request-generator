@@ -2,26 +2,13 @@
 Create request generators
 
 ```javascript
+```js
 const requestGenerator = require('request-generator')
-requestGenerator({
-  request: 'https://google'
-  // request: { host: },
-  chunk: 'items.*', // optional can also be a function
-  transform: data => {}, // optional
-  done: err => {}, // optional
-  pagination: { //default is before, optional
-    before: (requestOptions, i, cancel, options) => {
+// request, chunk, transform, done
+const gen = requestGenerator('google.com', 'item.*', (data) => {}, (err, next, req) => {})
+ // gen is an async iterator
 
-    }
-    after: (hits, i, cancel, options) => {
-
-    }
-  }
-})
-
-for (let hello of requestGenerator()) {
-  console.log(hello)
-}
+```
 ```
 
 ### ToDo
