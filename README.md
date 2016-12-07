@@ -2,13 +2,11 @@
 Create request generators
 
 ```javascript
-```js
 const requestGenerator = require('request-generator')
 // request, chunk, transform, done
 const gen = requestGenerator('google.com', 'item.*', (data) => {}, (err, next, req) => {})
  // gen is an async iterator
 
-```
 ```
 
 ### ToDo
