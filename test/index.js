@@ -18,7 +18,7 @@ test('basics - make a request generator', t => {
         console.log('errors during this request:', err)
       }
       if (chunkCount !== pageSize) {
-        return { stop: true } // @NOTE: could also reset page count here
+        return { done: true } // @NOTE: could also reset page count here
       } else {
         console.log('lolwhat', request)
         request.path = `/shows?page=${++page}&size=10`
