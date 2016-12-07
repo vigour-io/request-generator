@@ -20,6 +20,7 @@ const server = http.createServer((req, res) => {
       console.log('put in show', show)
       response.results.push(show)
     }
+    console.log('respend!')
     res.end(JSON.stringify(response))
   } else if (req.url === '/discover') {
 
