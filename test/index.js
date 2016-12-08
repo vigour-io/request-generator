@@ -10,10 +10,7 @@ test('basics - make a request generator', t => {
   const requestGenerator = require('../')
   let page = 0
   const request = 'http://localhost:4444/shows?page=0&size=10'
-  const endpoint = requestGenerator({
-    request,
-    stream: 'results.*',
-    done (err, chunkCount, request) {
+  const endpoint = requestGenerator(request, 'results.*', false, (err, request, chunkCount) => {
       if (err) {
         console.log('errors during this request:', err)
       }
@@ -23,8 +20,7 @@ test('basics - make a request generator', t => {
         console.log('lolwhat', request)
         request.path = `/shows?page=${++page}&size=10`
       }
-    }
-  })
+    })()
   const totalShows = 100
   let consumedShows = 0
   consume(endpoint)
@@ -53,7 +49,7 @@ test('basics - make a request generator', t => {
       }
     } else {
       console.log('weyo reached the end!')
-      t.equals(consumedShows, totalShows, `consumed all ${totalShows} shows`)
+      t.equals(consumedShows, totalShows, `consumed ${consumedShows} out of ${totalShows} shows`)
       server.close()
       t.end()
     }
