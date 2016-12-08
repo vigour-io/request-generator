@@ -13,14 +13,13 @@ test('basics - make a request generator', t => {
   const endpoint = requestGenerator({
     request,
     stream: 'results.*',
-    done (err, chunkCount, request) {
+    done: (err, request, chunkCount) => {
       if (err) {
         console.log('errors during this request:', err)
       }
       if (chunkCount !== pageSize) {
         return { done: true } // @NOTE: could also reset page count here
       } else {
-        console.log('lolwhat', request)
         request.path = `/shows?page=${++page}&size=10`
       }
     }
@@ -30,15 +29,11 @@ test('basics - make a request generator', t => {
   consume(endpoint)
 
   function consume (chunks) {
-    console.log('----------------------- consume!')
     let step = chunks.next()
     if (!step.done) {
       let chunk = step.value
-      console.log('got next!', chunk)
       if (chunk instanceof Promise) {
-        console.log('---------- promise!')
         chunk.then(chunk => {
-          console.log('---------- promise resolved!')
           handle(chunk)
           consume(chunks)
         })
@@ -47,20 +42,17 @@ test('basics - make a request generator', t => {
           consume(chunks)
         })
       } else {
-        console.log('---------- no promise!')
         handle(chunk)
         consume(chunks)
       }
     } else {
-      console.log('weyo reached the end!')
-      t.equals(consumedShows, totalShows, `consumed all ${totalShows} shows`)
+      t.equals(consumedShows, totalShows, `consumed ${consumedShows} out of ${totalShows} shows`)
       server.close()
       t.end()
     }
   }
 
   function handle (chunk) {
-    console.log('yay chunk!', chunk)
     consumedShows++
   }
 })
