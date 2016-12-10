@@ -15,7 +15,7 @@ module.exports = http.createServer((req, res) => {
     let n = 0
     // console.log('start at', i)
     let show
-    while ((show = responses.shows[i++]) && n < params.size) {
+    while ((show = shows[i++]) && n < params.size) {
       n++
       // console.log('put in show', show)
       response.results.push(show)
@@ -25,16 +25,23 @@ module.exports = http.createServer((req, res) => {
   } else if (req.url === '/discover') {
 
   } else if (req.url === '/discover/row') {
-
+  } else if (req.url === '/notjson') {
+    res.end('lols')
+    // res.end(badJSON) // @TODO: check this out bad json is not bad enough?
+  } else if (req.url === '/404') {
+    res.writeHead(404)
+    res.end('<html><head><title>Page no find</head><body>nope</body></html>')
+  } else {
+    res.end('"hi this is the mockserver!"')
   }
 })
 
-const responses = {
-  shows: []
-}
+const shows = []
 let i = 0
 while (i++ < 100) {
-  responses.shows.push({
+  shows.push({
     title: 'show_' + i
   })
 }
+const badBase = { results: shows }
+const badJSON = JSON.stringify(badBase).slice(0, -5)
