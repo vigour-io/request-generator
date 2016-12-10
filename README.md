@@ -14,7 +14,7 @@ const gen = requestGenerator({
 
 ```
 
-# example
+### example
 
 ```javascript
 const url = 'http://api.themoviedb.org'
