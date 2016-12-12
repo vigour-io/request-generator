@@ -27,13 +27,13 @@ test('pagination - 100 shows in 10 pages', t => {
   })
   const totalShows = 100
   let consumedShows = 0
-  consume(endpoint,
-    chunk => consumedShows++,
-    () => {
+  consume({chunks: endpoint,
+    onChunk: chunk => consumedShows++,
+    onEnd: () => {
       t.equals(consumedShows, totalShows, `consumed ${consumedShows} out of ${totalShows} shows`)
       t.end()
     }
-  )
+  })
 })
 
 test('errors - getting error types', t => {
@@ -60,7 +60,7 @@ test('errors - getting error types', t => {
             request.port = 4444
             break
           case 2:
-            t.equals(err.type, 'stream', 'second error is steram error')
+            t.equals(err.type, 'stream', 'second error is stream error')
             t.ok(err.request, 'error contains request options')
             request.path = '/404'
             break
@@ -80,13 +80,11 @@ test('errors - getting error types', t => {
       }
     }
   })
-  const totalShows = 100
-  let consumedShows = 0
-  consume(endpoint,
-    chunk => consumedShows++,
-    () => {
+  consume({
+    chunks: endpoint,
+    onEnd: () => {
       t.end()
-    }
+    }}
   )
 })
 
@@ -96,22 +94,25 @@ test('teardown', t => {
   t.end()
 })
 
-function consume (chunks, onChunk, onEnd) {
+function consume ({ chunks, onChunk, onError, onEnd }) {
   let step = chunks.next()
   if (!step.done) {
     let chunk = step.value
     if (chunk instanceof Promise) {
       chunk.then(chunk => {
-        onChunk(chunk)
-        consume(chunks, onChunk, onEnd)
+        onChunk && onChunk(chunk)
+        consume({ chunks, onChunk, onError, onEnd })
       })
       .catch(err => {
+        if (err && onError) {
+          onError(err)
+        }
         // console.log('consumed an error!', !!err)
-        consume(chunks, onChunk, onEnd)
+        consume({ chunks, onChunk, onError, onEnd })
       })
     } else {
-      onChunk(chunk)
-      consume(chunks, onChunk, onEnd)
+      onChunk && onChunk(chunk)
+      consume({ chunks, onChunk, onError, onEnd })
     }
   } else {
     onEnd()
