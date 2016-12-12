@@ -23,8 +23,14 @@ module.exports = http.createServer((req, res) => {
     // console.log('respend!')
     res.end(JSON.stringify(response))
   } else if (req.url === '/discover') {
-
-  } else if (req.url === '/discover/row') {
+    res.end(JSON.stringify({
+      results: discover
+    }))
+  } else if (req.url.indexOf('/discover/row/') !== -1) {
+    const row = req.url.split('/discover/row/')[1]
+    res.end(JSON.stringify({
+      results: rows[row]
+    }))
   } else if (req.url === '/notjson') {
     res.end('lols')
     // res.end(badJSON) // @TODO: check this out bad json is not bad enough?
@@ -32,6 +38,7 @@ module.exports = http.createServer((req, res) => {
     res.writeHead(404)
     res.end('<html><head><title>Page no find</head><body>nope</body></html>')
   } else {
+    console.log('undefined endpoint')
     res.end('"hi this is the mockserver!"')
   }
 })
@@ -43,5 +50,19 @@ while (i++ < 100) {
     title: 'show_' + i
   })
 }
-const badBase = { results: shows }
-const badJSON = JSON.stringify(badBase).slice(0, -5)
+// const badBase = { results: shows }
+// const badJSON = JSON.stringify(badBase).slice(0, -5)
+
+const discover = []
+const rows = []
+for (let i = 0; i < 4; i++) {
+  discover.push({type: 'row', id: i})
+  rows[i] = []
+  for (let j = 0; j < 3; j++) {
+    rows[i].push({ type: 'item', id: `${i}-${j}` })
+  }
+}
+
+console.log('???', JSON.stringify({
+  results: discover
+}))
