@@ -1,6 +1,6 @@
 {
   "name": "request-generator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Factory for Generator functions that yield request-response transactions.",
   "main": "lib/index.js",
   "scripts": {
