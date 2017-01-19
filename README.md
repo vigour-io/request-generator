@@ -25,4 +25,4 @@ yarn add request-generator
 
 ### ToDo
 
-- throttling of requests / sec for weak APIs
+- throttling of requests / sec for weak APIs (those moves are weak babe)
