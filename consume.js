@@ -1,25 +1,24 @@
 'use strict'
 
-module.exports = function consume ({ chunks, onChunk, onError, onDone }) {
-  let step = chunks.next()
+module.exports = iterable => new Promise(resolve => {
+  consume(iterable, resolve)
+})
+/*
+  consume lets you pass an iterable and will iterate over it patiently (waiting for promises to fulfill before calling next), onDone is called when the iterable is done.
+*/
+function consume (iterable, onDone) {
+  let step = iterable.next()
   if (!step.done) {
     let chunk = step.value
     if (chunk instanceof Promise) {
-      chunk.then(chunk => {
-        onChunk && onChunk(chunk)
-        consume({ chunks, onChunk, onError, onDone })
-      })
-      .catch(err => {
-        if (err && onError) {
-          onError(err)
-        }
-        consume({ chunks, onChunk, onError, onDone })
-      })
+      chunk.then(
+        () => consume(iterable, onDone),
+        () => consume(iterable, onDone)
+      )
     } else {
-      onChunk && onChunk(chunk)
-      consume({ chunks, onChunk, onError, onDone })
+      consume(iterable, onDone)
     }
-  } else {
-    onDone && onDone()
+  } else if (onDone) {
+    onDone()
   }
 }
