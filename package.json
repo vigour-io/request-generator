@@ -28,6 +28,7 @@
     "tape": "^4.6.3"
   },
   "dependencies": {
-    "JSONStream": "^1.2.1"
+    "jsonparse": "^1.2.0",
+    "through": ">=2.2.7 <3"
   }
 }
